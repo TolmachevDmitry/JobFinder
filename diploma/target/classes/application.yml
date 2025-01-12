@@ -1,0 +1,23 @@
+bot:
+  token: 8080230088:AAF2m5fdI92cHIAxz-kzoQCn9kGotyDMiK8
+  name: tolmic_bot
+  chatId: 14
+
+
+spring:
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      init:
+        pull-model-strategy: never
+        timeout: 1
+      chat:
+        options:
+          model: llama3.1
+          temperature: 0.7
+
+# spring:
+#   ai:
+#     ollama:
+#       base-url: http://localhost:11434/
+#       model: llama2
