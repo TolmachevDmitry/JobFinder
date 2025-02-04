@@ -44,21 +44,6 @@
 				<scope>import</scope>
 			</dependency>
 
-            <!-- <dependency>
-                <groupId>org.springframework.ai</groupId>
-                    <artifactId>spring-ai-bom</artifactId>
-                <version>1.0.0-M1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency> -->
-
-            <!-- <dependency>
-                <groupId>io.micrometer</groupId>
-                <artifactId>micrometer-bom</artifactId>
-                <version>1.14.2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency> -->
 		</dependencies>
 	</dependencyManagement>
 
@@ -86,16 +71,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-		    </dependency>
+        </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -132,6 +109,18 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-apis</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-httpclient-okhttp</artifactId>
+            <version>4.0.0</version>
         </dependency>
 
     </dependencies>

@@ -1,5 +1,2 @@
-com\tolmic\bot\BotInitializer.class
 com\tolmic\JobFindApplication.class
 com\tolmic\llm\LLMUsage.class
-com\tolmic\bot\BotConfig.class
-com\tolmic\bot\Bot.class

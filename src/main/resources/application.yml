@@ -1,6 +1,7 @@
 bot:
   token: 8080230088:AAF2m5fdI92cHIAxz-kzoQCn9kGotyDMiK8
   name: tolmic_bot
+  # убрать, т.к. это для конкретного пользователья
   chatId: 14
 
 
@@ -15,9 +16,3 @@ spring:
         options:
           model: llama3.1
           temperature: 0.7
-
-# spring:
-#   ai:
-#     ollama:
-#       base-url: http://localhost:11434/
-#       model: llama2
