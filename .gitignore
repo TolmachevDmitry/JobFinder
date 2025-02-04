@@ -1,3 +1,3 @@
 keys.yml
-target/**
-.vscode
+target/
+.vscode/
