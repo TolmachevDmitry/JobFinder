@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Data
 public class Vacancy {
 
+    private Long id;
+
     private String name;
 
     private String requirement;
@@ -25,7 +27,7 @@ public class Vacancy {
 
     @JsonProperty("experience")
     private void unpackExperience(Map<String, Object> experience) {
-        this.requirement = (String) experience.get("name");
+        this.experience = (String) experience.get("name");
     }
 
     @Override

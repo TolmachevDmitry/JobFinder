@@ -3,45 +3,52 @@ package com.tolmic;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tolmic.api.hh.Vacancy;
 
 
-@SpringBootTest
 public class AppTest 
 {
-    
-    // @Autowired
-    // ObjectMapper objectMapper;
-
-    @Test
-    public void shouldAnswerWithTrue()
-    {
-        // String jsonCarArray = 
-        //     "[{ \"name\" : \"Teacher\", \"organization\" : \"School № 1\", \"datePublished\" : \"11.2.2024\", \"city\" : \"Voronezh\", \"requirements\" : \"bla-bla-bla\", \"salary\" : \"50 000\" }]";
-
-        // List<Vacancy> vacancies = new ArrayList<>();
-        // try {
-        //     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        //     vacancies = objectMapper.readValue(jsonCarArray, new TypeReference<List<Vacancy>>(){});
-        // } catch (JsonProcessingException e) {
-        //     e.addSuppressed(e);
-        // }
+    private static class Person {
+        private String name;
+        private int age;
         
-        // assertEquals(vacancies.size(), 1);
-
-        // Vacancy vacancy = vacancies.get(0);
-
-        // assertEquals(vacancy.getCity(), "School № 1");
+        // Геттеры и сеттеры
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+        public int getAge() { return age; }
+        public void setAge(int age) { this.age = age; }
     }
+
+    @Test void test() {
+        assertTrue(true);
+    }
+
+    // public static void main(String[] args) throws JsonProcessingException {
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    //     String text = "{\"items\": [{\"name\":\"Иван\",\"age\":\"30\"}], \"pages\": \"20\"}";
+
+    //     JsonNode jsonNode = objectMapper.readTree(text);
+    //     JsonNode jn = jsonNode.get("items");
+
+    //     List<Person> p = objectMapper.readValue(jn.toString(), new TypeReference<List<Person>>(){});
+    // }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        String text = "Кассир";
+        Object page = 10;
+
+        String a = String.format("https://api.hh.ru/vacancies?text=%s&pages=%s", text, page);
+    } 
 }

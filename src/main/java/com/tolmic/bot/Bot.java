@@ -1,11 +1,9 @@
 package com.tolmic.bot;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,6 +14,7 @@ import com.tolmic.llm.LLMUsage;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+
 
 import com.tolmic.api.hh.HHApi;
 import com.tolmic.api.hh.Vacancy;
@@ -63,7 +62,12 @@ public class Bot extends TelegramLongPollingBot {
             case "Когда вы были созданы ?" ->
                 sendMessage(chatId, "14.12.2024");
             default -> {
-                List<Vacancy> api = HHApi.getSimpleData(messageText);
+                try {
+                    List<Vacancy> api = HHApi.getSimpleData(messageText);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
                 String str = LLMUsage.getAnswer("Хомячки");
                 sendMessage(chatId, str);
             }
