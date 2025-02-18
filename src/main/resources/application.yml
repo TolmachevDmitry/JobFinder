@@ -4,6 +4,7 @@ bot:
   # убрать, т.к. это для конкретного пользователья
   chatId: 14
 
+spring.ai.ollama.chat.options.functions: tolkAboutHamsters
 
 spring:
   ai:
