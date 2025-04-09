@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version> <!-- early - 3.3.1 -->
+        <version>3.3.2</version> <!-- early - 3.3.2 -->
         <relativePath/>
 	</parent>
 
@@ -19,8 +19,8 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>21</java.version>
-        <spring-ai.version>1.0.0-M5</spring-ai.version>
+        <java.version>17</java.version>
+        <spring-ai.version>1.0.0-M5</spring-ai.version> <!--1.0.0-M5-->
     </properties>
 
     <repositories>
@@ -68,9 +68,9 @@
 			<scope>test</scope>
 		</dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -119,11 +119,32 @@
             <version>4.0.0</version>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>com.vdurmont</groupId>
             <artifactId>emoji-java</artifactId>
             <version>3.3.0</version>
+        </dependency> -->
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-60</artifactId>
+            <version>2.21.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pgvector</groupId>
+            <artifactId>pgvector</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+
+        <!-- <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-vector</artifactId>
+            <version>6.5.2.Final</version>
+        </dependency> -->
 
     </dependencies>
 

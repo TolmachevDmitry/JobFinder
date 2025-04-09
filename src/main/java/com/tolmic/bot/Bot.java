@@ -1,7 +1,12 @@
 package com.tolmic.bot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,12 +17,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.tolmic.llm.LLMUsage;
+import com.tolmic.service.impl.VacanciesService;
 
-import jakarta.validation.constraints.NotNull;
+// import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 import com.tolmic.api.hh.HHApi;
-import com.tolmic.api.hh.Vacancy;
+import com.tolmic.entity.Vacancy;
 
 @Slf4j
 @Component
@@ -30,6 +36,12 @@ public class Bot extends TelegramLongPollingBot {
 
     @Autowired
     private HHApi HHApi;
+
+    @Autowired
+    private VacanciesService vacanciesService;
+
+    @Autowired
+    private EmbeddingModel embeddingModel;
 
     @Value("${bot.name}")
     public String name;
@@ -44,7 +56,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     @Override
-    public void onUpdateReceived(@NotNull Update update) {
+    public void onUpdateReceived(Update update) {
         if (!update.hasMessage() && !update.getMessage().hasText()) {
             return;
         }
@@ -61,15 +73,18 @@ public class Bot extends TelegramLongPollingBot {
             case "Когда вы были созданы ?" ->
                 sendMessage(chatId, "14.12.2024");
             default -> {
-                // try {
-                //     List<Vacancy> api = HHApi.getSimpleData(messageText);
-                // } catch (Exception e) {
-                //     e.printStackTrace();
-                // }
-                
-                String str = LLMUsage.getAnswer(messageText);
+                EmbeddingResponse vector = embeddingModel.embedForResponse(List.of(messageText));
 
-                sendMessage(chatId, str);
+                List<Object[]> vacancies = vacanciesService.findVacanciesFromDB(vector.getResults().get(0).getOutput());
+                List<Vacancy> vacs = new ArrayList<>();
+
+                for (Object[] vacancy : vacancies) {
+                    if ((Double) vacancy[1] > 0.80) {
+                        // vacs.add(vacanciesService.fromObject(vacancy[0]));
+                    }
+                }
+
+                int a = 10;
             }
         }
     }
@@ -85,10 +100,14 @@ public class Bot extends TelegramLongPollingBot {
 
         try {
             execute(message);
-            log.info("Reply sent");
+            writeLog("Reply sent");
         } catch (TelegramApiException e) {
-            log.error(e.getMessage());
+            writeLog(e.getMessage());
         }
+    }
+
+    private void writeLog(String messege) {
+        log.info(messege);
     }
 
     private void sendPhoto(Long chatId) {

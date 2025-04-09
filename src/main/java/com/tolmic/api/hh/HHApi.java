@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tolmic.entity.Vacancy;
 
 @PropertySource("keys.yml")
 @Component
@@ -50,6 +51,28 @@ public class HHApi {
         return getResponseEntity(text, page);
     }
 
+    private boolean dataIsCorrect(Vacancy vacancy) {
+        return vacancy.getExperience() != null && vacancy.getRequirement() != null && vacancy.getResponsibility() != null;
+    }
+
+    /**
+     * Incorrect data - it is class object, that have at lest one field with null-value
+     * 
+     * @param initialVcancies
+     * @return
+     */
+    private List<Vacancy> cleanFromIncorrectData(List<Vacancy> initialVcancies) {
+        List<Vacancy> cleanedVacancyData = new ArrayList<>();
+
+        for (Vacancy vacancy : initialVcancies) {
+            if (dataIsCorrect(vacancy)) {
+                cleanedVacancyData.add(vacancy);
+            }
+        }
+
+        return cleanedVacancyData;
+    }
+
     private List<Vacancy> getVacanciesFromJsonNode(JsonNode jsonNode) throws JsonProcessingException {
         JsonNode jn = jsonNode.get("items");
         return objectMapper.readValue(jn.toString(), new TypeReference<List<Vacancy>>(){});
@@ -71,11 +94,12 @@ public class HHApi {
         List<Vacancy> vacancies = new ArrayList<>(pageNumber * perPage);
         vacancies.addAll(getVacanciesFromJsonNode(jsonNode));
 
-        // takes quite a long time to complete
         for (int i = 1; i < pageNumber; i++) {
             jsonNode = getResponseByPage(vacancyName, i);
 
             List<Vacancy> listPart = getVacanciesFromJsonNode(jsonNode);
+            listPart = cleanFromIncorrectData(listPart);
+
             vacancies.addAll(listPart);
         }
 
