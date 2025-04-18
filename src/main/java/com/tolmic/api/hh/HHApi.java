@@ -51,28 +51,6 @@ public class HHApi {
         return getResponseEntity(text, page);
     }
 
-    private boolean dataIsCorrect(Vacancy vacancy) {
-        return vacancy.getExperience() != null && vacancy.getRequirement() != null && vacancy.getResponsibility() != null;
-    }
-
-    /**
-     * Incorrect data - it is class object, that have at lest one field with null-value
-     * 
-     * @param initialVcancies
-     * @return
-     */
-    private List<Vacancy> cleanFromIncorrectData(List<Vacancy> initialVcancies) {
-        List<Vacancy> cleanedVacancyData = new ArrayList<>();
-
-        for (Vacancy vacancy : initialVcancies) {
-            if (dataIsCorrect(vacancy)) {
-                cleanedVacancyData.add(vacancy);
-            }
-        }
-
-        return cleanedVacancyData;
-    }
-
     private List<Vacancy> getVacanciesFromJsonNode(JsonNode jsonNode) throws JsonProcessingException {
         JsonNode jn = jsonNode.get("items");
         return objectMapper.readValue(jn.toString(), new TypeReference<List<Vacancy>>(){});
@@ -98,7 +76,6 @@ public class HHApi {
             jsonNode = getResponseByPage(vacancyName, i);
 
             List<Vacancy> listPart = getVacanciesFromJsonNode(jsonNode);
-            listPart = cleanFromIncorrectData(listPart);
 
             vacancies.addAll(listPart);
         }

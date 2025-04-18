@@ -25,7 +25,6 @@ public class DBActualizer implements CommandLineRunner {
     private void actualizeDB() {
         for (String profession : professions) {
             List<Vacancy> vacancies = vacanciesService.findVacanciesFromHH(profession);
-            vacanciesService.createVectorView(vacancies);
             vacanciesService.saveVacancy(vacancies);
         }
     }

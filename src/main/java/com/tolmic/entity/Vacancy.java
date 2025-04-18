@@ -1,12 +1,8 @@
 package com.tolmic.entity;
 
 import lombok.Data;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,34 +27,32 @@ public class Vacancy {
     private String name;
 
     @Column(columnDefinition = "text")
-    private String requirement;
+    private String description;
 
-    @Column(columnDefinition = "text")
-    private String responsibility;
+    private String city;
 
-    @Column(columnDefinition = "text")
+    private String employer;
+
     private String experience;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "vacancy")
-    private List<VectorView> vectorViews;
 
     @JsonIgnore
     private boolean isOpen;
 
-    @JsonProperty("snippet")
-    private void unpackSnippet(Map<String, Object> snippet) {
-        this.requirement = (String) snippet.get("requirement");
-        this.responsibility = (String) snippet.get("responsibility");
-    }
+    @JsonIgnore
+    private float[] vectorView;
 
     @JsonProperty("experience")
     private void unpackExperience(Map<String, Object> experience) {
         this.experience = (String) experience.get("name");
     }
 
-    @Override
-    public String toString() {
-        return "";
+    @JsonProperty("area")
+    private void unpackArea(Map<String, Object> area) {
+        this.city = (String) area.get("name");
+    }
+
+    @JsonProperty("employer")
+    private void unpackEmployer(Map<String, Object> employer) {
+        this.employer = (String) employer.get("name");
     }
 }

@@ -18,5 +18,4 @@ public class ObjectMapperConfig {
 
         return objectMapper;
     }
-
 }

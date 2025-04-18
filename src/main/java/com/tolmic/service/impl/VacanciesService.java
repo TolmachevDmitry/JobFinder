@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tolmic.api.hh.HHApi;
 import com.tolmic.entity.Vacancy;
-import com.tolmic.entity.VectorView;
 import com.tolmic.repository.VacancyRepository;
 import com.tolmic.service.VacanciesServiceInterface;
 
@@ -54,35 +53,6 @@ public class VacanciesService implements VacanciesServiceInterface {
         return index;
     }
 
-    // rename method !
-    private void createEmbeddingByText(List<VectorView> vectorViews, String text) {
-        int endPropInd = getIndexOfPropEnd(text);
-        int startPropInd = 0;
-
-        while (endPropInd != -1) {
-            String proposal = text.substring(startPropInd, endPropInd + 1);
-
-            VectorView vectorView = new VectorView();
-            vectorView.setView(turnToEmbedding(proposal));
-
-            vectorViews.add(vectorView);
-
-            startPropInd = endPropInd + 1;
-            endPropInd = getIndexOfPropEnd(text.substring(startPropInd));
-        }
-    }
-
-    private void createVectorView(Vacancy vacancy) {
-        List<VectorView> vectorViews = new ArrayList<>();
-
-        createEmbeddingByText(vectorViews, vacancy.getExperience());
-        createEmbeddingByText(vectorViews, vacancy.getName());
-        createEmbeddingByText(vectorViews, vacancy.getRequirement());
-        createEmbeddingByText(vectorViews, vacancy.getRequirement());
-
-        vacancy.setVectorViews(vectorViews);
-    }
-
     @Override
     public List<Vacancy> findVacanciesFromHH(String name) {
         List<Vacancy> vacancies = new ArrayList<>();
@@ -96,12 +66,6 @@ public class VacanciesService implements VacanciesServiceInterface {
         return vacancies;
     }
 
-    public void createVectorView(List<Vacancy> vacancies) {
-        for (Vacancy vacancy : vacancies) {
-            createVectorView(vacancy);
-        }
-    }
-
     @Override
     public void saveVacancy(List<Vacancy> vacancies) {
         saveVacancy(vacancies);
@@ -109,13 +73,6 @@ public class VacanciesService implements VacanciesServiceInterface {
 
     public Vacancy fromObject(Object[] obj) {
         Vacancy v = new Vacancy();
-
-        v.setId(Long.valueOf((String) obj[0]));
-        v.setName((String) obj[1]);    
-        v.setOpen(true);     
-        v.setRequirement((String) obj[3]);
-        v.setResponsibility((String) obj[4]);
-        v.setRequirement((String) obj[5]);
 
         return v;
     }
