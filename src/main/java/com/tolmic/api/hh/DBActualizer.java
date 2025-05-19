@@ -1,6 +1,8 @@
 package com.tolmic.api.hh;
 
-import java.util.List;
+import java.time.LocalTime;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,17 +18,15 @@ public class DBActualizer implements CommandLineRunner {
     @Autowired
     private VacanciesService vacanciesService;
 
-    String[] professions = new String[] {"Бухглатер", "Java-программист", "Python-программист", "QA-инженер", 
-                                        "1С-программист", "Кассир", "Продавец", "Водитель", "Врач", "Кладовщик", "Электрик",
-                                        "Python-программист", "Тестировщик", "Аптекарь", "Сварщик", "Тракторист", "Сантехник", "Директор",
-                                        "Учитель", "Курьер", "Преподаватель", "Программист на C#", "Программист на Go", "Монтажник",
-                                        "Повар", "Кандитер", "Охранник", "Строитель"};
+    private boolean compareTime(LocalTime now) {
+        LocalTime start = LocalTime.of(22,30);
+        LocalTime end   = LocalTime.of(23, 30);
+
+        return now.isAfter(start) && now.isBefore(end);
+    }
 
     private void actualizeDB() {
-        for (String profession : professions) {
-            List<Vacancy> vacancies = vacanciesService.findVacanciesFromHH(profession);
-            vacanciesService.saveVacancy(vacancies);
-        }
+        vacanciesService.updateVacancyStorage();
     }
 
     @Override
@@ -34,15 +34,19 @@ public class DBActualizer implements CommandLineRunner {
         boolean isActive = true;
 
         while(isActive) {
-            // actualizeDB();
+            LocalTime localTime = LocalTime.now();
+
+            if (compareTime(localTime)) {
+                actualizeDB();
+            }
 
             try {
-                Thread.sleep(10000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 isActive = false;
             }
-        }
+        } 
     }
 
 }

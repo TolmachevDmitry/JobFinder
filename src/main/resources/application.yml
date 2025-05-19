@@ -30,11 +30,3 @@ spring:
   sql:
     init:
       mode: always
-  jackson:
-    serialization:
-      max-line-length: -1
-      max-nesting-depth: -1
-
-
-
-

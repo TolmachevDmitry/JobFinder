@@ -12,6 +12,8 @@ import com.tolmic.entity.Vacancy;
 // SELECT v, CAST(v.vectors AS vec) <=> CAST(:vect AS vector1) FROM vacancy v
 @Repository
 public interface VacancyRepository extends CrudRepository<Vacancy, Long> {
+
     @Query(value = "SELECT v FROM vacancy v", nativeQuery = true)
-    public List<Object[]> findCosinus(@Param("vect") float[] vect);
+    List<Object[]> findCosinus(@Param("vect") float[] vect, double threshold);
+
 }

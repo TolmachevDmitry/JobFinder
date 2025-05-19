@@ -1,11 +1,15 @@
 package com.tolmic.api.hh;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 
 public class AccessTokenActualizer implements CommandLineRunner {
 
     private void actualAccessToken() {
-        
+        for (int i = 0; i < 20; i++) {
+            System.out.println("actual token");
+        }
     }
 
     @Override
@@ -14,11 +18,10 @@ public class AccessTokenActualizer implements CommandLineRunner {
 
         while(isActive) {
 
-            
-            // actualAccessToken();
+            actualAccessToken();
 
             try {
-                Thread.sleep(10000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 isActive = false;
@@ -26,5 +29,9 @@ public class AccessTokenActualizer implements CommandLineRunner {
         }
 
     }
+
+    // public AccessTokenActualizer() {
+    //     run();
+    // }
 
 }

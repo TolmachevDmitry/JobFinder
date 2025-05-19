@@ -1,7 +1,9 @@
 package com.tolmic.service.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.embedding.EmbeddingResponse;
@@ -18,22 +20,59 @@ import com.tolmic.service.VacanciesServiceInterface;
 public class VacanciesService implements VacanciesServiceInterface {
 
     @Autowired
-    private HHApi HHApi;
+    private VacancyRepository vacancyRepository;
 
     @Autowired
-    private VacancyRepository vacancyRepository;
+    private HHApi HHApi;
+
+    private final double threshold = 98.34;
 
     // 1 элемент списка ~ 660 символов и 86 слов
     @Autowired
     private EmbeddingModel embeddingModel;
 
     @Override
-    public List<Object[]> findVacanciesFromDB(float[] vector) {
-        List<Object[]> vacancies = vacancyRepository.findCosinus(new float[] {1, 2});
+    public List<Object[]> findVacanciesByCosinus(float[] vector) {
+        List<Object[]> vacancies = vacancyRepository.findCosinus(new float[] {1, 2}, threshold);
 
         fromObject((Object[]) vacancies.get(0)[0]);
 
         return vacancies;
+    }
+
+    private Vacancy findVacancyById(Long id) {
+        return vacancyRepository.findById(id).get();
+    }
+
+    private void saveVacancyMain(Vacancy vacancy) {
+        vacancyRepository.save(vacancy);
+    }
+
+    @Override
+    public void saveVacancy(Vacancy vacancy) {
+        saveVacancyMain(vacancy);
+    }
+
+    public Vacancy fromObject(Object[] obj) {
+        Vacancy v = new Vacancy();
+
+        return v;
+    }
+
+    private void updateVacancyStorage(LinkedList<Vacancy> vacancies) {
+        while (!vacancies.isEmpty()) {
+            Vacancy vacancy = vacancies.pollFirst();
+
+            if (vacancy != null) {
+                saveVacancyMain(vacancy);
+            }
+        }
+    }
+
+    @Override
+    public void updateVacancyStorage() {
+        updateVacancyStorage(HHApi.getVacancies());
+
     }
 
     private float[] turnToEmbedding(String text) {
@@ -51,30 +90,6 @@ public class VacanciesService implements VacanciesServiceInterface {
         }
 
         return index;
-    }
-
-    @Override
-    public List<Vacancy> findVacanciesFromHH(String name) {
-        List<Vacancy> vacancies = new ArrayList<>();
-
-        try {
-            vacancies = HHApi.getSimpleData(name);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return vacancies;
-    }
-
-    @Override
-    public void saveVacancy(List<Vacancy> vacancies) {
-        saveVacancy(vacancies);
-    }
-
-    public Vacancy fromObject(Object[] obj) {
-        Vacancy v = new Vacancy();
-
-        return v;
     }
     
 }
