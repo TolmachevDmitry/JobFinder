@@ -30,3 +30,11 @@ spring:
   sql:
     init:
       mode: always
+    security:
+      oauth2:
+        client:
+          registration:
+            my-client:
+              client-id: MKO05LHS6HCOUOEHIP2H5UEH4C8PP4CT0JEG78CELRGV7B7316C0CP7V5O6LJP2D
+              client-secret: SCVD4U5PJJPOMR90AOHO6VKN9FR912MLO2V6SQRVCDS01C2AAQJR4VK78GIEASRA
+

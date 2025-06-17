@@ -48,9 +48,12 @@ public class VacanciesService implements VacanciesServiceInterface {
         vacancyRepository.save(vacancy);
     }
 
-    @Override
-    public void saveVacancy(Vacancy vacancy) {
-        saveVacancyMain(vacancy);
+    private void saveVacancies(LinkedList<Vacancy> vacancies) {
+        while (!vacancies.isEmpty()) {
+            saveVacancyMain(vacancies.getFirst());
+
+            vacancies.peekFirst();
+        }
     }
 
     public Vacancy fromObject(Object[] obj) {
@@ -59,20 +62,36 @@ public class VacanciesService implements VacanciesServiceInterface {
         return v;
     }
 
-    private void updateVacancyStorage(LinkedList<Vacancy> vacancies) {
-        while (!vacancies.isEmpty()) {
-            Vacancy vacancy = vacancies.pollFirst();
+    private void processDeprecatedData(List<Long> ids) {
+        List<Long> idsDeprecatedVacancies = vacancyRepository.findDeprecatedIndetifiers(ids);
 
-            if (vacancy != null) {
-                saveVacancyMain(vacancy);
-            }
-        }
+        vacancyRepository.defindDeprecatedVacancies(idsDeprecatedVacancies);
+        vacancyRepository.defindDeprecatedVacancies(idsDeprecatedVacancies);
     }
+
+    // private List<Long> getVacanciesIdes() {
+    //     return HHApi.getVacanciesIdentifiers();
+    // }
+
+    // private LinkedList<Vacancy> getVacanciesAPI(List<Long> ides) {
+    //     return HHApi.getVacancies(ides);
+    // }
+
+    // private void processNewData(List<Long> ids) {
+    //     List<Long> idsNewVacancies = vacancyRepository.findMissingIdentifiers(ids);
+
+    //     LinkedList<Vacancy> vacancies = getVacanciesAPI(idsNewVacancies);
+    //     idsNewVacancies.clear();
+        
+    //     saveVacancies(vacancies);
+    // } 
 
     @Override
     public void updateVacancyStorage() {
-        updateVacancyStorage(HHApi.getVacancies());
+        // List<Long> ids = getVacanciesIdes();
 
+        // processDeprecatedData(ids);
+        // processNewData(ids);
     }
 
     private float[] turnToEmbedding(String text) {
@@ -80,16 +99,6 @@ public class VacanciesService implements VacanciesServiceInterface {
         float[] embedding = vector.getResults().get(0).getOutput();
 
         return embedding;
-    }
-
-    private int getIndexOfPropEnd(String str) {
-        int index = str.indexOf(".");
-
-        if (index == -1) {
-            index = str.indexOf("!");
-        }
-
-        return index;
     }
     
 }

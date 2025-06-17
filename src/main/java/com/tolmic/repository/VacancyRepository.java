@@ -16,4 +16,16 @@ public interface VacancyRepository extends CrudRepository<Vacancy, Long> {
     @Query(value = "SELECT v FROM vacancy v", nativeQuery = true)
     List<Object[]> findCosinus(@Param("vect") float[] vect, double threshold);
 
+    @Query(value = "CALL find_missing_identifiers(:identifiers);", nativeQuery = true)
+    List<Long> findMissingIdentifiers(@Param("identifiers") List<Long> identifiers);
+
+    @Query(value = "CALL find_deprecated_indetifiers (:identifiers);", nativeQuery = true)
+    List<Long> findDeprecatedIndetifiers (@Param("identifiers") List<Long> identifiers);
+
+    @Query(value = "CALL defind_deprecated_vacancies (:identifiers);", nativeQuery = true)
+    void defindDeprecatedVacancies(@Param("identifiers") List<Long> identifiers);
+
+    @Query(value = "CALL defind_deprecated_vacancies (:identifiers);", nativeQuery = true)
+    void deleteDeprecatedVacancies(@Param("identifiers") List<Long> identifiers);
+
 }

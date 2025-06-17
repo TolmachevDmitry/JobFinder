@@ -18,6 +18,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import com.tolmic.llm.LLMUsage;
 import com.tolmic.service.impl.VacanciesService;
 
+import ai.djl.huggingface.tokenizers.HuggingFaceTokenizer;
 // import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,6 +69,7 @@ public class Bot extends TelegramLongPollingBot {
             case "Когда вы были созданы ?" ->
                 sendMessage(chatId, "14.12.2024");
             default -> {
+
                 EmbeddingResponse vector = embeddingModel.embedForResponse(List.of("Что мы ждём: Опыт программирования 1С от 2-х лет; Знание 1С 7 и 8; Опыт работы с типовыми и нетиповыми конфигурациями 1С; Навыки работы с СУБД; Опыт работы с системами контроля версий Наличие сертификатов 1С будет являться преимуществом. "));
                 EmbeddingResponse vector1 = embeddingModel.embedForResponse(List.of(messageText));
                 float[] v = vector.getResult().getOutput();
@@ -83,9 +85,7 @@ public class Bot extends TelegramLongPollingBot {
 
                 // sendMessage(chatId, "Для профессии Бухгалтер в настоящее время к кандидату на должность выдвигаются следующие требования:\nВысшее экономическое образование;\nЗнание бухгалтерского и налогового учёта;\nУмение работать в программах 1С Бухгалтерия 8.3, World, Excel;\nУмение составлять квартальну отчётность;\nУмение рассчитывать заработную плату;\nРабота с первичной документацией;\nЗнание действующего законодательства и нормативных актов по бухгалтерскому учету, отчетности и анализу финансово-хозяйственной деятельности;\nВнимательность, способность работать с большим количеством документов, стрессоустойчивость.\nТребуемый опыт работы: от 1 до 2 лет.");
 
-                sendMessage(chatId, "По вашим данным наиболее подходящими являются вакансии, связанные с системных администрированием. Вот их список:\nСистемный администратор. Работодатель: СтройПроектСервис. Город: Санкт-Петербург. URL: https://voronezh.hh.ru/vacancy/104096043;\nСистемный администратор. Работодатель: Синема Стар. Город: Москва. URL: https://voronezh.hh.ru/vacancy/104137674;\nСистемный администратор Linux. Работодатель: СПб ГУП «АТС Смольного». Город: Санкт-Петербург. URL: https://voronezh.hh.ru/vacancy/104541426;\nСистемный администратор. Работодатель: НПП Полет. Город: Нижний Новгород. URL: https://voronezh.hh.ru/vacancy/101443863;\nСистемный администратор на склад. Работодатель: Красное & Белое, розничная сеть. Город: Зеленоград. URL: https://voronezh.hh.ru/vacancy/102709619;\nИнженер-программист АСУ ТП. Работодатель: ГБУЗ Медицинский информационно-аналитический центр. Город: Краснодар. URL: https://voronezh.hh.ru/vacancy/102830782;\nАдминистратор Linux. Работодатель: СБЕР. Город: Москва. URL: https://voronezh.hh.ru/vacancy/103671404");
-
-                int a = 10;
+                sendMessage(chatId, LLMUsage.getAnswer(messageText));
             }
         }
     }

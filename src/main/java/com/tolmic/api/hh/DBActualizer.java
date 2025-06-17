@@ -33,20 +33,20 @@ public class DBActualizer implements CommandLineRunner {
     public void run(String... args) {
         boolean isActive = true;
 
-        while(isActive) {
-            LocalTime localTime = LocalTime.now();
+        // while(isActive) {
+        //     LocalTime localTime = LocalTime.now();
 
-            if (compareTime(localTime)) {
-                actualizeDB();
-            }
+        //     if (compareTime(localTime)) {
+        //         actualizeDB();
+        //     }
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                isActive = false;
-            }
-        } 
+        //     try {
+        //         Thread.sleep(2000);
+        //     } catch (InterruptedException e) {
+        //         Thread.currentThread().interrupt();
+        //         isActive = false;
+        //     }
+        // } 
     }
 
 }

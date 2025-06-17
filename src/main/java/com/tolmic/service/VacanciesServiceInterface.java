@@ -6,8 +6,6 @@ import com.tolmic.entity.Vacancy;
 
 public interface VacanciesServiceInterface {
 
-    public void saveVacancy(Vacancy vacancies);
-
     public void updateVacancyStorage();
 
     public List<Object[]> findVacanciesByCosinus(float[] vector);
