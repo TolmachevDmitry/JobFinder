@@ -25,6 +25,9 @@ public class VacanciesService implements VacanciesServiceInterface {
     @Autowired
     private HHApi HHApi;
 
+    @Autowired
+    private EmbeddingsGeneration embeddingsGeneration;
+
     private final double threshold = 98.34;
 
     // 1 элемент списка ~ 660 символов и 86 слов
